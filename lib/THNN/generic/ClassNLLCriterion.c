@@ -49,7 +49,7 @@ void THNN_(ClassNLLCriterion_updateOutput)(
       int cur_target = target_data[i] - 1;
       THAssert(cur_target >= 0 && cur_target < n_classes);
 
-      real cur_weight = weights ? weights_data[cur_target] : 1.0f;
+      real cur_weight = weights ? weights_data[i] : 1.0f;
       total_weight_data[0] += cur_weight;
       output_data[0] -= input_data[i * n_target + cur_target] * cur_weight;
     }
@@ -123,7 +123,7 @@ void THNN_(ClassNLLCriterion_updateGradInput)(
       THAssert(cur_target >= 0 && cur_target < n_classes);
 
       gradInput_data[i * n_target + cur_target] =
-        -(weights ? weights_data[cur_target] : 1.0f);
+        -(weights ? weights_data[i] : 1.0f);
 
       if (sizeAverage && *total_weight_data) {
         gradInput_data[i * n_target + cur_target] /= *total_weight_data;

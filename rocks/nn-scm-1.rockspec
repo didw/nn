@@ -1,15 +1,15 @@
-package = "nn"
+package = "nn_didw"
 version = "scm-1"
 
 source = {
-   url = "git://github.com/torch/nn.git",
+   url = "git://github.com/didw/nn.git",
 }
 
 description = {
    summary = "Neural Network package for Torch",
    detailed = [[
    ]],
-   homepage = "https://github.com/torch/nn",
+   homepage = "https://github.com/didw/nn",
    license = "BSD"
 }
 

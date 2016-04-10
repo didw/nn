@@ -1,21 +1,29 @@
 local THNN = require 'nn.THNN'
 local ClassNLLCriterion, parent = torch.class('nn.ClassNLLCriterion', 'nn.Criterion')
 
-function ClassNLLCriterion:__init(weights, sizeAverage)
-    parent.__init(self)
-    if sizeAverage ~= nil then
-       self.sizeAverage = sizeAverage
-    else
-       self.sizeAverage = true
-    end
-    if weights then
-       assert(weights:dim() == 1, "weights input should be 1-D Tensor")
-       self.weights = weights
-    end
+function ClassNLLCriterion:__init(N, T, weights, sizeAverage)
+   parent.__init(self)
+   if sizeAverage ~= nil then
+      self.sizeAverage = sizeAverage
+   else
+      self.sizeAverage = true
+   end
 
-    self.output_tensor = torch.zeros(1)
-    self.total_weight_tensor = torch.ones(1)
-    self.target = torch.zeros(1):long()
+   weights = torch.Tensor(N * T):float()
+   for i=1,N do
+      for j=1,T do
+         weights[(i-1)*T+j] = torch.exp(j-T)
+      end
+   end
+
+   if weights then
+      assert(weights:dim() == 1, "weights input should be 1-D Tensor")
+      self.weights = weights
+   end
+
+   self.output_tensor = torch.zeros(1)
+   self.total_weight_tensor = torch.ones(1)
+   self.target = torch.zeros(1):long()
 end
 
 function ClassNLLCriterion:__len()
